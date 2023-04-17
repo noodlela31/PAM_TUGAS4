@@ -1,0 +1,50 @@
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchUsers } from "../store/actions/userActions";
+import {Text, View, FlatList, StyleSheet} from "react-native";
+
+const User = ({navigation}) => {
+    const users = useSelector((state) => state.users)
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(fetchUsers());
+    }, []);
+
+    const renderItem = ({ item }) => (
+        <Text key={item.id}>{item.email}</Text>
+    );
+    
+    return (
+        <View style={styles.container}>
+            <View style={styles.header}>
+                <Text>EMAIL PEMBELI</Text>
+            </View>
+            <View style={styles.body}>
+                <FlatList
+                    data={users}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id.toString()}
+                />
+            </View>
+        </View>
+    );
+};
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "grey",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    body: {
+        padding: 50,
+    },
+    header: {
+        marginBottom: 1,
+        padding: 50,
+        marginTop: 300,
+    },
+});
+
+export default User;
